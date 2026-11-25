@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja de Games - Avaliar Jogo</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #634a8b;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background-color: #7b53bd;
+            padding: 40px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #fffb00;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #fffb00;
+        }
+        textarea, input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid black;
+            border-radius: 6px;
+            background-color: #0f3460;
+            color: #ffffff;
+            font-size: 15px;
+            font-family: inherit;
+        }
+        textarea::placeholder, input::placeholder {
+            color: #a3b8d9;
+        }
+        textarea:focus, input:focus {
+            outline: 2px solid #fffb00;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #fffb00;
+            color: #4a2882;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: rgb(222, 224, 63);
+        }
+        .mensagem {
+            margin-top: 16px;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            white-space: pre-line;
+        }
+        .mensagem:empty {
+            display: none;
+        }
+        #erro {
+            background-color: #d93025;
+            color: #ffffff;
+        }
+        #sucesso {
+            background-color: #1e8e3e;
+            color: #ffffff;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Avaliar Jogo</h1>
+        <form id="formAvaliacao" novalidate>
+            <label for="comentario">Comentário</label>
+            <textarea id="comentario" placeholder="Ex: Jogo incrível, história muito boa!"></textarea>
+
+            <label for="nota">Nota (1 a 5)</label>
+            <input type="number" id="nota" placeholder="Ex: 5" min="1" max="5">
+
+            <button type="submit">Enviar Avaliação</button>
+
+            <p id="erro" class="mensagem"></p>
+            <p id="sucesso" class="mensagem"></p>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('formAvaliacao');
+        const campoComentario = document.getElementById('comentario');
+        const campoNota = document.getElementById('nota');
+        const msgErro = document.getElementById('erro');
+        const msgSucesso = document.getElementById('sucesso');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Limpa mensagens anteriores antes de validar
+            msgErro.textContent = '';
+            msgSucesso.textContent = '';
+
+            const comentario = campoComentario.value.trim();
+            const notaTexto = campoNota.value.trim();
+            const nota = Number(notaTexto);
+
+            const erros = [];
+
+            if (comentario === '') {
+                erros.push('• O comentário não pode estar vazio.');
+            }
+
+            if (notaTexto === '' || isNaN(nota) || nota < 1 || nota > 5) {
+                erros.push('• A nota deve ser um número entre 1 e 5.');
+            }
+
+            if (erros.length > 0) {
+                msgErro.textContent = erros.join('\n');
+                return;
+            }
+
+            console.log({ comentario, nota });
+            msgSucesso.textContent = 'Avaliação enviada com sucesso!';
+            form.reset();
+        });
+    </script>
+</body>
+</html>
